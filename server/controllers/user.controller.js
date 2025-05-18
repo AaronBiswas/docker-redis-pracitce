@@ -1,8 +1,14 @@
-import User from "../model/user.js"
+import User from "../model/user.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-const Signup = async (req, res) => {
+export const Signup = async (req, res) => {
   try {
     const { fullname, email, password } = req.body;
+
+    if (!fullname || !email || !password) {
+      return res.status(403).json({ message: "Please fill all the fields" });
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -10,32 +16,53 @@ const Signup = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user
     const newUser = new User({
       fullname: fullname,
       email: email,
-      password: password,
+      password: hashedPassword,
     });
 
     const user = newUser.save();
 
     if (!user) {
       return res.status(500).json({ message: "Error creating user" });
-    }
-    else {
+    } else {
       return res.status(201).json({ message: "User created successfully" });
     }
-
-
-    
   } catch (error) {
     console.error("Error during signup:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
+export const Login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(403).json({ message: "Please fill all the fields" });
+    }
 
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "User not found! Please sign up" });
+    }
 
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-export default Signup;
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    return res.status(200).json({
+      message: "Login successful",
+    });
+  } catch (error) {
+    console.error("Error during login:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
