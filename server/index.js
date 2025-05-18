@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from "dotenv";
+import cookieParser from 'cookie-parser';
 import Connection from './db/connectdb.js';
 import userRoute from './routes/user.route.js';
 import todoRoute from './routes/todo.route.js';
@@ -16,6 +17,7 @@ const app = express();
 Connection();
 
 app.use(express.json());
+app.use(cookieParser());
 
 
 app.use("/practice/user", userRoute);

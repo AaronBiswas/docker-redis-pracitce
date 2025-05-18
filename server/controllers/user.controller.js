@@ -1,6 +1,7 @@
 import User from "../model/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Token } from "../auth/auth.js";
 
 export const Signup = async (req, res) => {
   try {
@@ -57,6 +58,8 @@ export const Login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid password" });
     }
+
+   await Token(user._id,res)
 
     return res.status(200).json({
       message: "Login successful",
