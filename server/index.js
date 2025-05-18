@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from "dotenv";
 import Connection from './db/connectdb.js';
 import userRoute from './routes/user.route.js';
+import todoRoute from './routes/todo.route.js';
+
 
 dotenv.config();
 
@@ -17,6 +19,7 @@ app.use(express.json());
 
 
 app.use("/practice/user", userRoute);
+app.use("/practice/todo", todoRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
