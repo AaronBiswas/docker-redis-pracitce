@@ -10,6 +10,7 @@ export const createTodo = async (req, res) => {
     const newTodo = new Todo({
       title: title,
       description: description,
+      createdBy: req.id,
     });
 
     const savedTodo = await newTodo.save();
@@ -28,7 +29,7 @@ export const createTodo = async (req, res) => {
 
 export const getTodos = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.id;
     if (!userId) {
       return res.status(400).json({ message: "User ID is required" });
     }

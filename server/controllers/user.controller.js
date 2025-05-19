@@ -59,13 +59,29 @@ export const Login = async (req, res) => {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-   await Token(user._id,res)
+    await Token(user._id, res);
 
     return res.status(200).json({
       message: "Login successful",
     });
   } catch (error) {
     console.error("Error during login:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const Logout = async (req, res) => {
+  try {
+    res
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      })
+      .status(201)
+      .json({ message: "User logged out successfully" });
+  } catch (error) {
+    console.error("Error during logout:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

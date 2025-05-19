@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import Connection from './db/connectdb.js';
 import userRoute from './routes/user.route.js';
 import todoRoute from './routes/todo.route.js';
+import { isAuthenticated } from './middleware/isAuthenticated.js';
 
 
 dotenv.config();
@@ -21,7 +22,7 @@ app.use(cookieParser());
 
 
 app.use("/practice/user", userRoute);
-app.use("/practice/todo", todoRoute);
+app.use("/practice/todo",isAuthenticated, todoRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

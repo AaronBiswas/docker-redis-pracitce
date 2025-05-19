@@ -5,7 +5,7 @@ const router = Router();
 
 
 router.post("/new",createTodo)
-router.get("/tasks/:userId",getTodos)
+router.get("/tasks",getTodos)
 router.put("/update/:todoId",updateTodo)
 router.delete("/delete/:todoId",deleteTodo)
 
