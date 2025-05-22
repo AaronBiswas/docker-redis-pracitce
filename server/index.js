@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import Connection from './db/connectdb.js';
 import userRoute from './routes/user.route.js';
 import todoRoute from './routes/todo.route.js';
+import cors from 'cors';
 import { isAuthenticated } from './middleware/isAuthenticated.js';
 
 
@@ -17,6 +18,11 @@ const app = express();
 //Connect to MongoDB
 Connection();
 
+
+app.use(cors({
+    origin: "http://localhost:5173", // Removed the trailing slash
+    credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 
