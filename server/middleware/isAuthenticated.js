@@ -10,18 +10,15 @@ export const isAuthenticated = async (req, res, next) => {
     if (!token)
       return res
         .status(401)
-        .json({ success:false,message: "User not authenticated! Please login again" });
+        .json({ success: false, message: "User not authenticated! Please login again" });
 
     const verifiedUser = jwt.verify(token, process.env.JWT_SECRET);
 
-    if (!verifiedUser) return res.status(401).json({ success:false, message: "Invalid user" });
-
-    req.id=verifiedUser.id;
+    req.id = verifiedUser.id;
 
     next();
-
   } catch (error) {
     console.log("Authentication error:", error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ success: false, error: "Internal server error" });
   }
 };

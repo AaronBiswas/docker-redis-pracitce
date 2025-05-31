@@ -24,7 +24,7 @@ function App() {
     e.preventDefault();
     try {
       const url = `${import.meta.env.VITE_API}practice/todo/new`;
-      const response = await axios.post(url, details);
+      const response = await axios.post(url, details, { withCredentials: true });
       if (response.data.success) {
         toast.success("Todo added successfully!");
         setDetails({
@@ -32,10 +32,10 @@ function App() {
           description: "",
         });
       } else {
-        toast.error("Error adding todo:", response.data.message);
+        toast.error(response.data.message || "Error adding todo");
       }
     } catch (e) {
-      toast.error("Error:", e.response.data.message);
+      toast.error(e.response?.data?.message || "Unknown error");
     }
     console.log("Form submitted:", details);
   };

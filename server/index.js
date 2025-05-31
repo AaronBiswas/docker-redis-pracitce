@@ -7,17 +7,14 @@ import todoRoute from './routes/todo.route.js';
 import cors from 'cors';
 import { isAuthenticated } from './middleware/isAuthenticated.js';
 
-
 dotenv.config();
 
 const PORT = process.env.PORT || 8000;
 
-
 const app = express();
 
-//Connect to MongoDB
+// Connect to MongoDB
 Connection();
-
 
 app.use(cors({
     origin: "http://localhost:5173", // Removed the trailing slash
@@ -26,9 +23,8 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-
 app.use("/practice/user", userRoute);
-app.use("/practice/todo",isAuthenticated, todoRoute);
+app.use("/practice/todo", isAuthenticated, todoRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

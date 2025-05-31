@@ -10,7 +10,7 @@ export const Token = async (userId, res) => {
 
   return res.cookie("token", token, {
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: "none",
     secure:true,
     maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
